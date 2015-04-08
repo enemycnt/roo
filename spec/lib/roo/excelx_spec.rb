@@ -283,6 +283,13 @@ describe Roo::Excelx do
     end
   end
 
+  describe 'formatted_value', :formatted  do
+    let(:path) { '/Users/nick/Downloads/Data(2).xlsx' }
+    it 'returns the expected result' do
+      expect(subject.formatted_value(2, 2)).to eq "¥800,5"
+    end
+  end
+
   describe '#empty?' do
     let(:path) { 'test/files/style.xlsx' }
 

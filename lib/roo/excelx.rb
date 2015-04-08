@@ -12,6 +12,7 @@ class Roo::Excelx < Roo::Base
   autoload :Relationships, 'roo/excelx/relationships'
   autoload :Comments, 'roo/excelx/comments'
   autoload :SheetDoc, 'roo/excelx/sheet_doc'
+  autoload :FormattedScan, 'roo/excelx/formatted_scan'
 
   module Format
     EXCEPTIONAL_FORMATS = {
@@ -75,7 +76,7 @@ class Roo::Excelx < Roo::Base
   end
 
   class Cell
-    attr_reader :type, :formula, :value, :excelx_type, :excelx_value, :style, :hyperlink, :coordinate
+    attr_reader :type, :formula, :value, :excelx_type, :excelx_value, :style, :hyperlink, :coordinate, :formatted_value
     attr_writer :value
 
     def initialize(value, type, formula, excelx_type, excelx_value, style, hyperlink, base_date, coordinate)
@@ -86,7 +87,9 @@ class Roo::Excelx < Roo::Base
       @excelx_value = excelx_value
       @style = style
       @value = type_cast_value(value)
+      @formatted_value = formatted_value
       @value = Roo::Link.new(hyperlink, @value.to_s) if hyperlink
+      
       @coordinate = coordinate
     end
 
@@ -106,6 +109,13 @@ class Roo::Excelx < Roo::Base
       def initialize(row, column)
         @row, @column = row, column
       end
+    end
+
+    def formatted_value
+      if type == :float  
+        format_code = FormattedScan.new(excelx_type[1], excelx_value.to_f).to_s
+      end
+      format_code
     end
 
     private
@@ -404,6 +414,11 @@ class Roo::Excelx < Roo::Base
   def excelx_type(row,col,sheet=nil)
     key = normalize(row,col)
     safe_send(sheet_for(sheet).cells[key], :excelx_type)
+  end
+
+  def formatted_value(row,col,sheet=nil)
+    key = normalize(row,col)
+    safe_send(sheet_for(sheet).cells[key], :formatted_value)
   end
 
   # returns the internal value of an excelx cell
