@@ -5,3 +5,4 @@
 .project
 *.lock
 .idea
+.DS_Store
