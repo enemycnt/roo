@@ -3,9 +3,6 @@ require 'spec_helper'
 require 'roo/excelx/formatted_scan'
 
 describe FormattedScan do
-  # subject(:xlsx) do
-  #   Roo::Excelx.new(path)
-  # end
 
   before :each do
     @formatted_scan = FormattedScan.new("[$¥-804]#,##0.0", 800.45)
@@ -16,13 +13,6 @@ describe FormattedScan do
       expect(@formatted_scan).to be_an_instance_of FormattedScan
     end
   end
-
-  # describe 'text_scan' do
-
-  #   it 'build token hash from format code' do
-  #     expect(@formatted_scan.text_scan("[$¥-804]#,##0.0", 800.45)).to eq("¥801")
-  #   end
-  # end
 
   describe 'to_s', :string do
     it "takes string and value params and returns a FormattedScan object" do
@@ -63,14 +53,12 @@ describe FormattedScan do
       expect(@formatted_scan.replace_parts("#,##0.0\\ [$$-804]", 800.44)).to eq("800,4 $")
     end
 
+    it 'process data with format code with money code with € in the beginning' do
+      expect(@formatted_scan.replace_parts("[$€-2]\ #,##0.00", 800.44)).to eq("€ 800,44")
+    end
+
     it 'process data with format code with money code with тенге' do
       expect(@formatted_scan.replace_parts("#,##0", 800.55)).to eq("801")
-    end
-  end
-
-  describe 'money_symbol' do
-    it 'returns money symbol' do
-      expect(@formatted_scan.money_symbol("[$¥-804]#,##0.0")).to eq("¥")
     end
   end
 
