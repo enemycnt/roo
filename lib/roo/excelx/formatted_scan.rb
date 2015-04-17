@@ -11,9 +11,9 @@ class FormattedScan
   # Quick lexical analys
   def replace_parts(format_code, value)
 
-    # insert single national money symbol (¥)
-    if format_code.match(/\\\s/)
-      format_code.sub!(/\\\s/, ' ')
+    # clear from backslashes
+    if format_code.match(/\\/)
+      format_code.gsub!(/\\/, '')
     end
     
     # insert single national money symbol (¥)
@@ -24,7 +24,8 @@ class FormattedScan
     # insert number with rounding
     if format_code.match(/\#,\#\#(0.\d+|0+|0$|)/)
       val = get_num(format_code, value)
-      format_code.sub!(/\#,\#\#(0.\d+|0+|0$|)/, val.to_s).sub!('.',',')
+      val = val.to_s.sub!('.',',') if val.is_a?(Float)
+      format_code.sub!(/\#,\#\#(0.\d+|0+|0$|)/, val.to_s)
     end
 
     # insert national currency code or other 

@@ -29,6 +29,10 @@ describe FormattedScan do
       expect(@formatted_scan.replace_parts("[$¥-804]#,##0.00", 800.45)).to eq("¥800,45")
     end
 
+    it 'process data with format code with decimal and money symbol in the end' do
+      expect(@formatted_scan.replace_parts("#,##0.00[$¥-804]", 800.45)).to eq("800,45¥")
+    end
+
     it 'process data with format code with int' do
       expect(@formatted_scan.replace_parts("[$¥-804]#,##0", 800.5)).to eq("¥801")
     end
@@ -43,6 +47,10 @@ describe FormattedScan do
 
     it 'process data with format code with money code with руб' do
       expect(@formatted_scan.replace_parts("#,##0\\ \"руб\"", 800.5)).to eq("801 руб")
+    end
+
+    it 'process data with format code with money code with руб.' do
+      expect(@formatted_scan.replace_parts("#,##0\р\у\б\.", 800.5)).to eq("801руб.")
     end
 
     it 'process data with format code with money code with тенге' do
