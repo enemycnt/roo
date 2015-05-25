@@ -286,7 +286,7 @@ describe Roo::Excelx do
   describe 'formatted_value', :formatted  do
     let(:path) { 'test/files/formatted.xlsx' }
     it 'returns the expected result' do
-      expect(subject.formatted_value(2, 2)).to eq "¥800,5"
+      expect(subject.formatted_value(2, 2)).to eq "¥800.5"
     end
   end
 
