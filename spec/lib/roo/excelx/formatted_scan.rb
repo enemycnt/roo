@@ -16,21 +16,21 @@ describe FormattedScan do
 
   describe 'to_s', :string do
     it "takes string and value params and returns a FormattedScan object" do
-      expect(@formatted_scan.to_s).to eq("¥800,5")
+      expect(@formatted_scan.to_s).to eq("¥800.5")
     end
   end
 
   describe 'replace_parts' do
     it 'process data with format code with decimal' do
-      expect(@formatted_scan.replace_parts("[$¥-804]#,##0.0", 800.5)).to eq("¥800,5")
+      expect(@formatted_scan.replace_parts("[$¥-804]#,##0.0", 800.5)).to eq("¥800.5")
     end
 
     it 'process data with format code with decimal' do
-      expect(@formatted_scan.replace_parts("[$¥-804]#,##0.00", 800.45)).to eq("¥800,45")
+      expect(@formatted_scan.replace_parts("[$¥-804]#,##0.00", 800.45)).to eq("¥800.45")
     end
 
     it 'process data with format code with decimal and money symbol in the end' do
-      expect(@formatted_scan.replace_parts("#,##0.00[$¥-804]", 800.45)).to eq("800,45¥")
+      expect(@formatted_scan.replace_parts("#,##0.00[$¥-804]", 800.45)).to eq("800.45¥")
     end
 
     it 'process data with format code with int' do
@@ -58,16 +58,21 @@ describe FormattedScan do
     end
 
     it 'process data with format code with money code with $ in the end' do
-      expect(@formatted_scan.replace_parts("#,##0.0\\ [$$-804]", 800.44)).to eq("800,4 $")
+      expect(@formatted_scan.replace_parts("#,##0.0\\ [$$-804]", 800.44)).to eq("800.4 $")
     end
 
     it 'process data with format code with money code with € in the beginning' do
-      expect(@formatted_scan.replace_parts("[$€-2]\ #,##0.00", 800.44)).to eq("€ 800,44")
+      expect(@formatted_scan.replace_parts("[$€-2]\ #,##0.00", 800.44)).to eq("€ 800.44")
     end
 
     it 'process data with format code with money code with тенге' do
       expect(@formatted_scan.replace_parts("#,##0", 800.55)).to eq("801")
     end
+
+    it 'process data with "[Red]" in format' do
+      expect(@formatted_scan.replace_parts("[$€-2]\ #,##0.00;[Red][$€-2]\ #,##0.00", 100.00)).to eq("€ 100.0")
+    end
+
   end
 
   describe 'rounded_num' do

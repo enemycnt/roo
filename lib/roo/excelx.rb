@@ -112,7 +112,7 @@ class Roo::Excelx < Roo::Base
     end
 
     def formatted_value
-      if type == :float  
+      if type == :float
         format_code = FormattedScan.new(excelx_type[1], excelx_value.to_f).to_s
       end
       format_code

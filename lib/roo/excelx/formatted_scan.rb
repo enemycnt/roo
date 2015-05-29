@@ -15,6 +15,12 @@ class FormattedScan
     if format_code.match(/\\/)
       format_code.gsub!(/\\/, '')
     end
+
+    # clear "red"
+    if format_code.match(/;\[Red\].+$/)
+      format_code.sub!(/;\[Red\].+$/, '')
+    end
+
     
     # insert single national money symbol (¥)
     if format_code.match(/\[\$(\W)\-.+?\]/)
