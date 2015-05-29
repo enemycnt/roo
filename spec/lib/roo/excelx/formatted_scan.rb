@@ -73,6 +73,14 @@ describe FormattedScan do
       expect(@formatted_scan.replace_parts("[$€-2]\ #,##0.00;[Red][$€-2]\ #,##0.00", 100.00)).to eq("€ 100.0")
     end
 
+    it 'process negative data with format code with money code with €' do
+      expect(@formatted_scan.replace_parts("[$€-2]\ #,##0.00", -800.44)).to eq("-€ 800.44")
+    end
+
+    it 'process negative data' do
+      expect(@formatted_scan.replace_parts("#,##0", -800.55)).to eq("-801")
+    end
+
   end
 
   describe 'rounded_num' do

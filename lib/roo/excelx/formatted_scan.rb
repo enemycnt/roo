@@ -38,14 +38,18 @@ class FormattedScan
       format_code.sub!(/\"([[:word:]$]+)\"/, '\1')
     end
 
+    if value < 0
+      format_code = format_code.prepend('-')
+    end
+
     format_code
   end
 
   def get_num(format_code, value)
     if format_code.match(/\#\,\#\#(\d)\./)
-      rounded_num(format_code, value)
+      rounded_num(format_code, value.abs)
     else
-      value.round(0).to_i
+      value.abs.round(0).to_i
     end
   end
 
