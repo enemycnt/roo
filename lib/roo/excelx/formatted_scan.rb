@@ -12,9 +12,9 @@ class FormattedScan
   def replace_parts(format_code, value)
 
     # Percent hack
-    if format_code.match(/0%$/)
-      number = (value * 100).truncate
-      format_code.gsub!('0', number.to_s )
+    if format_code.match(/%$/)
+      val = get_percent(format_code, value)
+      format_code.sub!(/^(0.\d+|0+|0$|)/, val.to_s)
     end
 
     # clear from backslashes
@@ -53,6 +53,15 @@ class FormattedScan
 
   def get_num(format_code, value)
     if format_code.match(/\#\,\#\#(\d)\./)
+      rounded_num(format_code, value.abs)
+    else
+      value.abs.round(0).to_i
+    end
+  end
+
+  def get_percent(format_code, value)
+    value = value * 100
+    if format_code.match(/^(\d)\./)
       rounded_num(format_code, value.abs)
     else
       value.abs.round(0).to_i

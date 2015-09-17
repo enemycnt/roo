@@ -85,6 +85,10 @@ describe FormattedScan do
       expect(@formatted_scan.replace_parts("0%", 0.95)).to eq("95%")
     end
 
+    it 'process fractional precent ' do
+      expect(@formatted_scan.replace_parts("0.0%", 0.095)).to eq("9.5%")
+    end
+
   end
 
   describe 'rounded_num' do
