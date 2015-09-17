@@ -11,6 +11,12 @@ class FormattedScan
   # Quick lexical analys
   def replace_parts(format_code, value)
 
+    # Percent hack
+    if format_code.match(/0%$/)
+      number = (value * 100).truncate
+      format_code.gsub!('0', number.to_s )
+    end
+
     # clear from backslashes
     if format_code.match(/\\/)
       format_code.gsub!(/\\/, '')

@@ -81,6 +81,10 @@ describe FormattedScan do
       expect(@formatted_scan.replace_parts("#,##0", -800.55)).to eq("-801")
     end
 
+    it 'process precent data' do
+      expect(@formatted_scan.replace_parts("0%", 0.95)).to eq("95%")
+    end
+
   end
 
   describe 'rounded_num' do
